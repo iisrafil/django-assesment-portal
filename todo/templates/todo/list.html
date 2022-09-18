@@ -1,0 +1,44 @@
+{% extends "dashboard/base3.html" %}
+
+{% block content %}
+<div class="content-section">
+    <a class="btn btn-outline-info" href="{% url 'create_task' %}">Add Task</a>
+    <div class="container-fluid">
+        <h3 class="text-center title feature"><span class= "border-bottom border-info">Task To-do</span></h3>
+        {%for pending in pendings %}
+        <div class="row d-flex ">
+            <div class="card mb-3">
+              <div class="row g-0">
+                <div class="col-md-12">
+                  <div class="card-body">
+                      <p>
+                        <a class="card-title"><strong>{{pending.title}}</strong></a>
+                        <a class="btn btn-success" href="{% url 'mark' pending.pk %}"><i class="bi bi-check-lg"></i></a>
+                      </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <div class="container-fluid">
+        <h3 class="text-center title feature"><span class= "border-bottom border-danger">Task Completed</span></h3>
+        {%for done in dones %}
+        <div class="row d-flex ">
+            <div class="card border-danger mb-3">
+              <div class="row g-0">
+                <div class="col-md-12">
+                  <div class="card-body">
+                      <p>
+                        <a class="card-title"><strong>{{done.title}}</strong></a>
+                      </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
