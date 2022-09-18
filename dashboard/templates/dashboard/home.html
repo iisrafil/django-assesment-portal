@@ -1,0 +1,35 @@
+{% extends "dashboard/base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+    <div class="content-section shadow-lg p-3 mb-5 rounded">
+        <h3 class="text-center">My Course</h3>
+        {% if not user.profile.is_student %}
+           <a class="btn btn-outline-success my-2 my-sm-0" href="{% url 'add-course' %}">Add Course</a>
+        {% endif %}
+        {% for course in courses %}
+            {% if not user.profile.is_student %}
+            <article class="media content-section">
+              <div class="media-body">
+                <div class="article-metadata">
+                  <a class="mr-2" >{{ course.Course_code }}</a>
+                  <a class="mr-2" >{{ course.Teacher.profile.user.username }}</a>
+                </div>
+                <h3><a class="article-title" href="{% url 'course-detail' course.Enroll_key %}">{{ course.Title }}</a></h3>
+                <p class="article-content">Click Here To know more what's going on this course</p>
+              </div>
+            </article>
+            {% else %}
+            <article class="media content-section">
+              <div class="media-body">
+                <div class="article-metadata">
+                  <a class="mr-2" >{{ course.Course.Course_code }}</a>
+                  <a class="mr-2" >{{ course.Course.Teacher.profile.user.username }}</a>
+                </div>
+                <h3><a class="article-title" href="{% url 'course-detail' course.Course.Enroll_key %}">{{ course.Course.Title }}</a></h3>
+                <p class="article-content">Click Here To know more what's going on this course</p>
+              </div>
+            </article>
+            {% endif %}
+        {% endfor %}
+    </div>
+{% endblock content %}

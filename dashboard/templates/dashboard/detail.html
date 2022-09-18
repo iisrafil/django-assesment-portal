@@ -1,0 +1,157 @@
+{% extends "dashboard/base4.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+    <h3 class="text-center">{{ course }}</h3>
+    <div class="content-section shadow-lg p-3 mb-5 bg-white rounded">
+        <h3>All Post</h3>
+        {% if not user.profile.is_student %}
+            <a class="btn btn-outline-success my-2 my-sm-0" href="{% url 'add-post' Enroll_key %}">Create Post</a>
+        {% endif %}
+        {% for post in posts %}
+            <article class="media content-section">
+              <div class="media-body">
+                <div class="article-metadata">
+                  <a class="mr-2" >{{ post.course.Course_code }}</a>
+                  <small class="text-muted">{{ post.date_posted|date:"F d, Y" }}</small>
+                </div>
+                <h3><a class="article-title" href="#">{{ post.title }}</a></h3>
+                  <p class="article-content">{{ post.description }}</p>
+                {% if post.attachment != '' %}
+                  <a class="article-content" target="_blank" href="{{ post.attachment.url }}"><i class="text-info">Attachment:</i> {{ post.attachment }}</a><br>
+                {% endif %}
+                  {% if not user.profile.is_student %}
+                    <a class="btn btn-outline-danger my-2 my-sm-0 " href="{% url 'delete-post' post.id %}"><i class="fas fa-trash-alt"></i></a>
+                    <a class="btn btn-outline-success my-2 my-sm-0" href="{% url 'update-post' post.id %}"><i class="fas fa-edit"></i></a>
+                  {% endif %}
+
+              </div>
+            </article>
+        {% endfor %}
+    </div>
+
+{% endblock content %}
+
+
+{% block task %}
+<div class="content-section shadow-lg p-3 mb-5 bg-white rounded">
+<h3>Assignment</h3>
+    <p class='text-muted'>See the latest and due Assignments here
+      {% if not user.profile.is_student %}
+        <a class="btn btn-outline-success my-2 my-sm-0 " href="{% url 'add-assignment' Enroll_key %}">Create Assignment</a>
+      {% endif %}
+      </br>
+      <ul class="list-group">
+        {% if assignments %}
+            {% for assignment in assignments %}
+                <li class="list-group-item list-group-item-light">
+                    <a class="popup-with-move-anim" href="#details-lightbox-{{assignment.id}}">{{ assignment.Title }}</a><br>
+                    <a> Last Date: {{ assignment.last_date_of_submission }}</a>
+
+                </li>
+            {% endfor %}
+        {% else %}
+            <li class="list-group-item list-group-item-light text-center">
+                <p class="" href="">No Assignment found</p><br>
+
+            </li>
+        {% endif %}
+      </ul>
+    </p>
+
+<h3>Quiz</h3>
+    <p class='text-muted'>See the latest and due Quizes here
+      {% if not user.profile.is_student %}
+        <a class="btn btn-outline-success my-2 my-sm-0" href="{% url 'add-quiz' Enroll_key %}">Create Quiz</a>
+      {% endif %}
+      </br>
+      <ul class="list-group">
+        {% if quiz %}
+            {% for quizs in quiz %}
+                <li class="list-group-item list-group-item-light">
+                    <a class="popup-with-move-anim" href="#details-quiz-{{quizs.id}}">{{ quizs.name }}  </a>
+
+                </li>
+            {% endfor %}
+        {% else %}
+            <li class="list-group-item list-group-item-light text-center">
+                <p class="" href="">No Quiz found</p><br>
+
+            </li>
+        {% endif %}
+      </ul>
+    </p>
+    </div>
+{% endblock task %}
+
+
+{% block details %}
+
+{% if assignments.QuerySet.count != 0 %}
+            {% for assignment in assignments %}
+        <div id="details-lightbox-{{assignment.id}}" class="lightbox-basic zoom-anim-dialog mfp-hide">
+        <div class="container">
+            <div class="content-section">
+                {% if not user.profile.is_student %}
+                    <a class="btn btn-outline-success" href="{% url 'update-assignment' assignment.id %}"><i class="fas fa-edit position-end"></i></a>
+                    <a class="btn btn-outline-danger" href="{% url 'delete-assignment' assignment.id %}"><i class="fas fa-trash-alt position-end"></i></a>
+                {% endif %}
+                <h3>{{ assignment.Title }}</h3>
+                    <article class="media content-section">
+                      <div class="media-body">
+                        <div class="article-metadata">
+                          <a class="mr-2" >{{ assignment.course.Course_code }}</a>
+                          <small class="text-muted">{{ assignment.last_date_of_submission|date:"F d, Y" }}</small>
+                        </div>
+                          <p class="article-content">{{ assignment.Question }}</p>
+                        {% if assignment.image != '' %}
+                        <img class="img-fluid" alt="Responsive image" src="{{ assignment.image.url }}">
+                        {% endif %}
+                        {% if assignment.file != '' %}
+                            <a class="article-content" target="_blank" href="{{ assignment.file.url }}">File attached: {{ assignment.file }}</a>
+                        {% endif %}
+                      </div>
+                    </article>
+                {% if not user.profile.is_student %}
+                    <a class="btn btn-outline-info my-2 my-sm-0" href="{% url 'assignment-submission' assignment.id %}">  Submissions</a>
+                {% endif %}
+                {% if user.profile.is_student %}
+                    <a class="btn btn-outline-success my-2 my-sm-0" href="{% url 'assignment-submit' assignment.id %}">  Submit assignment</a>
+                {% endif %}
+            </div>
+        </div> <!-- end of container -->
+    </div> <!-- end of lightbox-basic -->
+        {% endfor %}
+    {% endif %}
+
+{% if quiz.QuerySet.count != 0 %}
+    {% for quizs in quiz %}
+        <div id="details-quiz-{{quizs.id}}" class="lightbox-basic zoom-anim-dialog mfp-hide">
+            <div class="container">
+                <div class="content-section">
+                    {% if not user.profile.is_student %}
+                        <a class="btn btn-outline-info" href="{% url 'quiz-result' quizs.pk %}">Result</i></a>
+                    {% endif %}
+                     <h3 >{{ quizs.name }}</h3>
+                        <article class="media content-section">
+                          <div class="media-body">
+                            <div class="article-metadata">
+                              <a class="mr-2" >{{ quizs.course.Course_code }}</a>
+                            </div>
+                              <p class="article-content">{{ quizs.description }} </p>
+                          </div>
+                        </article>
+                    {% if not user.profile.is_student %}
+                    <a class="btn btn-outline-danger my-2 my-sm-0 " href="{% url 'delete-quiz' quizs.id %}"><i class="fas fa-trash-alt"></i></a>
+                    <a class="btn btn-outline-success my-2 my-sm-0" href="{% url 'update-quiz' quizs.id %}"> <i class="fas fa-edit"></i> </a>
+                    {% else %}
+                    <a class="btn btn-outline-info my-2 my-sm-0" href="{% url 'attempt-quiz' quizs.id %}">Take Attempt</a>
+                    {% endif %}
+                </div>
+            </div> <!-- end of container -->
+        </div> <!-- end of lightbox-basic -->
+    {% endfor %}
+{% endif %}
+
+
+{% endblock details %}
+    <!-- end of details lightbox 1 -->
