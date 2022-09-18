@@ -1,0 +1,41 @@
+{% extends "dashboard/base3.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+    <div class="content-section">
+        <form method="POST">
+            {% csrf_token %}
+            <fieldset class="form-group">
+                <legend class="border-bottom mb-4">Update Quiz</legend>
+                {{ form|crispy }}
+            </fieldset><br>
+            <div>
+                <legend class="border-bottom mb-4">Questions</legend>
+                <div class="d-grid border-bottom gap-2 d-md-flex  col">
+                  <a class="btn btn-outline-info  me-md-2" href="{% url 'add-question' quiz_id %}">Add Question</a><br>
+                </div>
+                <ul class="list-group" type="1">
+                    {% for question in questions %}
+                    <li class="list-group-item list-group-item-light"><h5>{{question.label}}</h5>
+                        <div class="row">
+                            <div class="form-group col">
+                                <a class="btn btn-outline-danger" href="{% url 'delete-question' question.id %}">Delete</a>
+                            </div>
+                        </div>
+                    </li>
+                    {% endfor %}
+                </ul><br>
+            </div>
+
+
+
+            <div class="row">
+                <div class="form-group col">
+                    <a class="btn btn-outline-danger" href="{%url 'course-detail' Course_code %}">Close</a>
+                </div>
+                <div class=" d-md-flex justify-content-md-end col">
+                  <button class="btn btn-outline-success" type="submit">Update</button>
+                </div>
+            </div>
+        </form>
+    </div>
+{% endblock content %}

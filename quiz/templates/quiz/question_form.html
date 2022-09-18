@@ -1,0 +1,41 @@
+{% extends "dashboard/base3.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div class="content-section">
+    <form class="form-horizontal" method="POST" action="">
+    {% csrf_token %}
+        <fieldset class="form-group">
+            <legend class="border-bottom mb-4">Add Question</legend>
+            {{ bookform|crispy }}
+        </fieldset>
+        {{ formset.management_form }}
+        <div>
+            {% for form in formset %}
+            <fieldset class="form-group">
+                <div class="row">
+                    <div class="col-sm">
+                        {{form.label.label}}
+                    </div>
+                    <div class="col-sm">
+                      {{form.label}}
+                    </div>
+                    <div class="col-sm">
+                      {{form.is_correct}}
+                        <a>is correct</a>
+                    </div>
+                </div>
+            </fieldset>
+            {% endfor %}
+        </div>
+        <div class="row">
+            <div class="form-group col">
+                <a class="btn btn-outline-danger" href="{%url 'update-quiz' quiz_id %}">Close</a>
+            </div>
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                <button class="btn btn-outline-info me-md-2" type="submit">Save & Add more</button>
+            </div>
+        </div>
+
+        </form>
+</div>
+{% endblock content %}

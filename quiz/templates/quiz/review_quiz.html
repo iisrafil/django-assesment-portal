@@ -1,0 +1,54 @@
+{% extends "dashboard/base3.html" %}
+{% block content %}
+    <div class="content-section">
+        <legend class="border-bottom mb-4">Review Your Answer</legend>
+            <div>
+                <table class="table table-striped">
+          <thead>
+            <tr>
+              <th scope="col">Question</th>
+              <th scope="col">Answer</th>
+              <th scope="col">Status</th>
+              <th scope="col">Edit</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% if answers.QuerySet.count != 0 %}
+               {% for answer in answers %}
+                <tr>
+                  <td>{{ answer.question.label }}</td>
+                  <td>{{ answer.answer.label }}</td>
+                  <td>saved</td>
+                  <td>
+                      <a class="btn-outline" href="{% url 'edit-ans' answer.question.pk %}"><i class="fas fa-edit"></i></a>
+                  </td>
+                </tr>
+              {% endfor %}
+          {% endif %}
+          {% if question.QuerySet.count != 0 %}
+               {% for questions in question %}
+                <tr>
+                  <td>{{ questions.label }}</td>
+                  <td>-</td>
+                  <td>not answered</td>
+                  <td>
+                      <a class="btn-outline" href="{% url 'edit-ans' questions.pk %}"><i class="fas fa-edit"></i></a>
+                  </td>
+                </tr>
+              {% endfor %}
+          {% endif %}
+          </tbody>
+        </table>
+            </div>
+
+
+
+            <div class="row">
+                <div class="form-group col">
+                    <a class="btn btn-outline-danger" href="{% url 'finis-quiz' quiz.id %}">Finish Attempt</a>
+                </div>
+
+            </div>
+        </form>
+    </div>
+{% endblock content %}

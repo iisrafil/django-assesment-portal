@@ -1,0 +1,21 @@
+{% extends "dashboard/base3.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+    <div class="content-section">
+        <form method="POST">
+            {% csrf_token %}
+            <fieldset class="form-group">
+                <legend class="border-bottom mb-4">Create Quiz</legend>
+                {{ form|crispy }}
+            </fieldset>
+            <div class="row">
+                <div class="form-group col">
+                    <a class="btn btn-outline-danger" href="{%url 'course-detail' Course_code %}">Close</a>
+                </div>
+                <div class="d-grid gap-2 d-md-flex justify-content-md-end col">
+                  <button class="btn btn-outline-info me-md-2" type="submit">Add question</button>
+                </div>
+            </div>
+        </form>
+    </div>
+{% endblock content %}

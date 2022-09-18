@@ -1,0 +1,46 @@
+{% extends "dashboard/base2.html" %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+    <div class="container">
+        <div class="content-section">
+            <h2 class="mb-3">{{ quiz.name }}</h2>
+            <form method="post" class="">
+                {% csrf_token %}
+                <fieldset class="form-group">
+                    <legend class="border-bottom mb-4">{{ question.label }}</legend>
+                    {{ form|crispy }}
+                </fieldset>
+                <div class="row">
+                    <button type="submit" class="btn btn-outline-success me-md-2">submit</button>
+                </div>
+            </form>
+        </div>
+    </div> <!-- end of container -->
+{% endblock %}
+
+{% block task %}
+<div class="content-section container">
+    <div class="row">
+ {% for page in page_obj.paginator.page_range %}
+    {% if page == page_obj.number %}
+    <a class="btn btn-info me-md-2" href="?page={{ page }}">{{page}}</a>
+    {% else %}
+    <a class="btn btn-outline-info me-md-2" href="?page={{ page }}">{{page}}</a>
+    {% endif %}
+ {% endfor %}
+    </div>
+    <div class="row justify-content-center">
+        <a class="btn btn-outline-success me-md-2" href="{% url 'review-quiz' quiz.id %}">Finish</a>
+    </div>
+    <div class="row justify-content-center">
+        {% if page_obj.has_previous %}
+            <a class="btn btn-outline-info me-md-2" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+        {% endif %}
+        {% if page_obj.has_next %}
+        <a class="btn btn-outline-info me-md-2" href="?page={{ page_obj.next_page_number }}">next</a>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
