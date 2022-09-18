@@ -1,0 +1,23 @@
+{% extends "dashboard/base3.html" %}
+{% load static %}
+
+{% block content %}
+  <div class="content-section">
+
+      <div class="row">
+
+        {% for room in rooms %}
+          <div class="col">
+            <div class="card border-primary mb-3" style="max-width: 18rem;">
+              <div class="card-body text-primary">
+                <h5 class="card-title">{{room.name}}</h5>
+                <p class="card-text">{{room.description}}</p>
+                <a href="{% url 'room_detail' room.slug %}" class="btn btn-outline-info"><i class="bi bi-chat-left-dots"></i></a>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+  </div>
+{% endblock content %}
+

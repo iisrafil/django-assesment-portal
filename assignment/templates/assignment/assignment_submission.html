@@ -1,0 +1,67 @@
+{% extends "dashboard/base3.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+    <div class="content-section">
+        <h3 class="text-center">{{ assignment.Title }}</h3>
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th scope="col">ID</th>
+              <th scope="col">Name</th>
+                <th scope="col">Email</th>
+              <th scope="col">Submission</th>
+            </tr>
+          </thead>
+          <tbody>
+          {% if submissions.QuerySet.count != 0 %}
+           {% for submission in submissions %}
+            <tr>
+              <th scope="row">{{ submission.submited_by.VarsityId }}</td>
+              <td>{{ submission.submited_by.user.username }}</td>
+              <td>{{ submission.submited_by.user.email }}</td>
+              <td>
+                  <a class="btn-outline-info popup-with-move-anim" href="#details-lightbox-{{submission.id}}">view </a>
+                  {% if submission.ans_file != '' %}
+                    <a> || </a>
+                    <a class="btn-outline-info popup-with-move-anim" href="{{ submission.ans_file.url }}" download=""  > Download</a>
+                  {% endif %}
+              </td>
+            </tr>
+          {% endfor %}
+          {% endif %}
+          </tbody>
+        </table>
+
+    </div>
+{% endblock content %}
+
+{% block details %}
+{% if submissions.QuerySet.count != 0 %}
+{% for submission in submissions %}
+        <div id="details-lightbox-{{submission.id}}" class="lightbox-basic zoom-anim-dialog mfp-hide">
+        <div class="container">
+            <div class="content-section">
+                <h3>{{ assignment.Title }}</h3>
+                    <article class="media content-section">
+                      <div class="media-body">
+                        <div class="article-metadata fw-bolder ">
+
+                            <a class="fw-bolder text-dark ">ID: {{ submission.submited_by.VarsityId }} |</a>
+
+
+                        </div>
+                          <p class="article-content">Answer: {{ submission.answer }}</p>
+
+                        {% if submission.ans_file != '' %}
+                            <a class="article-content" target="_blank" href="{{ submission.ans_file.url }}">View File attached: {{ submission.ans_file }}</a>
+                        {% endif %}
+                      </div>
+                    </article>
+
+            </div>
+        </div> <!-- end of container -->
+    </div> <!-- end of lightbox-basic -->
+        {% endfor %}
+    {% endif %}
+
+{% endblock details %}

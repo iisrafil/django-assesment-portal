@@ -1,0 +1,37 @@
+{% extends "dashboard/base3.html" %}
+{% load static %}
+
+{% block content %}
+  <div class="container">
+      	<div class="row">
+        	<div class="col-8 content-section">
+              <div class="">
+            	<div id="messages"></div>
+            	<footer class="footer mt-auto py-3 bg-light">
+                  <div class="container">
+                    <form id="message-form">
+                        <div >
+                          <label >Message</label>
+                          <div >
+                            <textarea id="message-input"placeholder="Your message here" rows="3" autofocus></textarea>
+                          </div>
+                        </div>
+                        <button type="submit" class="button">Send</button>
+                    </form>
+                  </div>
+                </footer>
+              </div>
+        	</div>
+          <div class="col-4 content-section">
+              <div class="float-right">
+          <h2 class="title">{{room.name}}</h2>
+          <p class="subtitle">
+            {{room.description}}
+          </p>
+        </div>
+        	</div>
+      	</div>
+  </div>
+
+{% endblock content %}
+

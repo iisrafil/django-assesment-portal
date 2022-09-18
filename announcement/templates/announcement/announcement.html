@@ -1,0 +1,30 @@
+{% extends "dashboard/base3.html" %}
+
+{% block content %}
+<div class="content-section">
+    {% if user.is_superuser %}
+    <a class="btn btn-outline-info" href="{% url 'createAnnouncement' %}">create</a>
+    {% endif %}
+<div class="container-fluid">
+   <h3 class="text-center title feature"><span class= "border-bottom border-info">Announcement</span></h3>
+    {%for content in contents %}
+    <div class="row d-flex ">
+    <div class="card mb-3">
+      <div class="row g-0">
+        <div class="col-md-12">
+          <div class="card-body">
+              <p>
+            <a class="card-title"><strong>{{content.title}}</strong></a>
+            <a class="btn text-primary" href="{% url 'view' content.pk %}">
+              Read
+            </a>
+              </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
+    {% endfor %}
+</div>
+</div>
+{% endblock %}

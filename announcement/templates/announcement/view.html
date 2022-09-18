@@ -1,0 +1,12 @@
+{% extends "dashboard/base3.html" %}
+{% block content %}
+<div class="content-section">
+<div class="container-fluid">
+   <h3 class="text-center title feature"><span class= "border-bottom border-info">{{content.title}}</span></h3>
+    <p> {{content.description}} </p>
+    {% if content.attachment %}
+    <a class="text-info" href="{{ content.attachment.url }}">Attachment</a>
+    {% endif %}
+</div>
+</div>
+{% endblock %}

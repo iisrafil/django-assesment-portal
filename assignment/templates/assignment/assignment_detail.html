@@ -1,0 +1,25 @@
+{% extends "dashboard/base3.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+    <div class="content-section">
+        <h3>{{ assignment.Title }}</h3>
+            <article class="media content-section">
+              <div class="media-body">
+                <div class="article-metadata">
+                  <a class="mr-2" >{{ assignment.course.Course_code }}</a>
+                  <small class="text-muted">{{ assignment.last_date_of_submission|date:"F d, Y" }}</small>
+                </div>
+                  <p class="article-content">{{ assignment.Question }}</p>
+                {% if assignment.image != '' %}
+                <img class="img-fluid" alt="Responsive image" src="{{ assignment.image.url }}">
+                {% endif %}
+                {% if assignment.file != '' %}
+                    <a class="article-content" target="_blank" href="{{ assignment.file.url }}">File attached: {{ assignment.file }}</a>
+                {% endif %}
+              </div>
+            </article>
+        {% if user.profile.is_student %}
+            <a class="btn btn-outline-success my-2 my-sm-0" href="{% url 'assignment-submit' assignment.id %}">  Submit assignment</a>
+        {% endif %}
+    </div>
+{% endblock content %}
